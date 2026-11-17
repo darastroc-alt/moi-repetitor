@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мой репетитор — Minecraft</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#17251b;color:#fff;font-family:Arial,sans-serif}
+header{background:#315b32;padding:22px;text-align:center;border-bottom:5px solid #203d24}
+h1{margin:0;font-size:28px}
+main{max-width:850px;margin:25px auto;padding:15px}
+.panel{background:#263b2a;border:3px solid #527c45;border-radius:12px;padding:20px;margin-bottom:18px}
+h2{margin-top:0;color:#b8ed83}
+button{background:#75a94c;border:0;border-bottom:4px solid #426b32;color:#10200f;padding:12px 18px;margin:5px;border-radius:6px;font-weight:bold;cursor:pointer}
+button:active{transform:translateY(2px)}
+button.active{background:#f0c94b}
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
+.subject{background:#354f38;padding:17px;border:2px solid #668b51;border-radius:8px;text-align:center}
+.subject span{font-size:30px;display:block;margin-bottom:8px}
+.small{color:#c4d5c1;font-size:14px}
+.bar{height:15px;background:#152519;border-radius:10px;overflow:hidden}
+.fill{height:100%;background:#e8c744;width:0%}
+#lesson{line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+<h1>⛏ МОЙ РЕПЕТИТОР</h1>
+<div>Твоя территория знаний</div>
+</header>
+<main>
+<section class="panel">
+<h2>👤 Выбери ученика</h2>
+<button onclick="choose('Павел')" id="pavel">Павел</button>
+<button onclick="choose('Виталий')" id="vitaly">Виталий</button>
+<div id="profile" class="small">Выбери свой профиль</div>
+</section>
+
+<section class="panel">
+<h2>⭐ Мой игровой опыт</h2>
+<div id="xp">0 XP</div>
+<div class="bar"><div class="fill" id="progress"></div></div>
+<p id="level" class="small">Уровень 1 · Новичок</p>
+</section>
+
+<section class="panel">
+<h2>📚 Мир знаний</h2>
+<div class="subjects">
+<div class="subject" onclick="openSubject('Математика')"><span>🧮</span>Математика</div>
+<div class="subject" onclick="openSubject('Русский язык')"><span>📖</span>Русский язык</div>
+<div class="subject" onclick="openSubject('Английский язык')"><span>🔤</span>Английский</div>
+<div class="subject" onclick="openSubject('Окружающий мир')"><span>🌍</span>Окружающий мир</div>
+<div class="subject" onclick="openSubject('Литературное чтение')"><span>📚</span>Литературное чтение</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>🎒 Учебная зона</h2>
+<div id="lesson">Сначала выбери ученика, затем предмет.</div>
+</section>
+</main>
+
+<script>
+let current='';
+let data=JSON.parse(localStorage.getItem('tutorData')||'{}');
+
+function save(){
+ localStorage.setItem('tutorData',JSON.stringify(data));
+}
+function choose(name){
+ current=name;
+ if(!data[name]) data[name]={xp:0};
+ document.getElementById('pavel').classList.toggle('active',name==='Павел');
+ document.getElementById('vitaly').classList.toggle('active',name==='Виталий');
+ document.getElementById('profile').textContent='Профиль ученика: '+name;
+ update();
+ document.getElementById('lesson').textContent='Отлично! '+name+', выбери предмет для занятия.';
+}
+function update(){
+ if(!current)return;
+ let xp=data[current].xp;
+ document.getElementById('xp').textContent=xp+' XP';
+ document.getElementById('progress').style.width=(xp%100)+'%';
+ document.getElementById('level').textContent='Уровень '+(Math.floor(xp/100)+1);
+}
+function openSubject(subject){
+ if(!current){
+  alert('Сначала выбери ученика!');
+  return;
+ }
+ document.getElementById('lesson').innerHTML=
+ '<h3>📘 '+subject+'</h3><p>Здесь будет занятие для ученика '+current+'.</p><p class="small">Система будет учитывать его собственные знания и успехи.</p><button onclick="earn()">Получить тестовые 10 XP</button>';
+}
+function earn(){
+ data[current].xp+=10;
+ save();
+ update();
+ alert('Ты получил 10 XP!');
+}
+</script>
+</body>
+</html>
