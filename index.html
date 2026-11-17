@@ -1,103 +1,204 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head> 
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Мой репетитор — Minecraft</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@600;800&display=swap">
 <style>
+:root{--bg:#14201a;--bg2:#1d2e24;--card:#243a2c;--line:#3f6a3a;--ink:#f4f8ee;--mute:#b5c9b0;--grass:#6fb43f;--grass-d:#3d6e22;--gold:#f3c53a;--red:#e0503a;--dia:#4fd8e0;--btnink:#0f1d0c;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#e9f2dc;--bg2:#d8e8c4;--card:#f6fbee;--line:#6fa24a;--ink:#16260f;--mute:#47623a;--grass-d:#3d6e22}}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;background:#17251b;color:#fff;font-family:Arial,sans-serif}
-header{background:#315b32;padding:22px;text-align:center;border-bottom:5px solid #203d24}
-h1{margin:0;font-size:28px}
-main{max-width:850px;margin:25px auto;padding:15px}
-.panel{background:#263b2a;border:3px solid #527c45;border-radius:12px;padding:20px;margin-bottom:18px}
-h2{margin-top:0;color:#b8ed83}
-button{background:#75a94c;border:0;border-bottom:4px solid #426b32;color:#10200f;padding:12px 18px;margin:5px;border-radius:6px;font-weight:bold;cursor:pointer}
-button:active{transform:translateY(2px)}
-button.active{background:#f0c94b}
-.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}
-.subject{background:#354f38;padding:17px;border:2px solid #668b51;border-radius:8px;text-align:center}
-.subject span{font-size:30px;display:block;margin-bottom:8px}
-.small{color:#c4d5c1;font-size:14px}
-.bar{height:15px;background:#152519;border-radius:10px;overflow:hidden}
-.fill{height:100%;background:#e8c744;width:0%}
-#lesson{line-height:1.6}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:600 17px/1.5 Nunito,Arial,sans-serif;overflow-x:hidden}
+.px{font-family:"Press Start 2P",Arial,sans-serif;line-height:1.5;letter-spacing:0}
+#cubes{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+#cubes i{position:absolute;bottom:-60px;width:var(--s);height:var(--s);background:var(--c);box-shadow:inset calc(var(--s)/-6) calc(var(--s)/-6) 0 rgba(0,0,0,.22),inset calc(var(--s)/6) calc(var(--s)/6) 0 rgba(255,255,255,.18);opacity:.35;animation:rise var(--d) linear infinite;animation-delay:var(--w)}
+@keyframes rise{to{transform:translateY(-120vh) rotate(180deg)}}
+main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:20px 16px 60px}
+.top{display:grid;grid-template-columns:1fr minmax(290px,350px);gap:22px;align-items:start;margin-bottom:30px}.side{margin-bottom:0}.hero{text-align:left;padding:14px 0}@media (max-width:720px){.top{grid-template-columns:1fr}.hero{text-align:center}}
+.hero h1{font-size:clamp(20px,5.5vw,34px);margin:14px 0 10px;color:var(--gold);text-shadow:3px 3px 0 var(--grass-d)}
+.hero p{margin:0;color:var(--mute)}
+.pick{display:inline-block;font-size:56px;animation:swing 2.4s ease-in-out infinite;transform-origin:70% 70%}
+@keyframes swing{50%{transform:rotate(-22deg)}}
+.block{background:var(--card);border:4px solid var(--line);box-shadow:0 6px 0 var(--grass-d);padding:18px;margin-bottom:26px;position:relative}
+.block h2{font-size:13px;margin:0 0 14px;color:var(--grass)}
+.who{display:flex;gap:12px;flex-wrap:wrap}
+.who button{flex:1 1 120px;display:flex;align-items:center;gap:12px;background:var(--bg2);color:var(--ink);border:3px solid var(--line);padding:12px;font:800 18px Nunito,Arial,sans-serif;cursor:pointer;transition:transform .15s,border-color .15s}
+.who button:hover{transform:translateY(-3px)}
+.who button[aria-pressed="true"]{border-color:var(--gold);background:var(--grass-d);animation:pop .35s}
+.av{width:44px;height:44px;display:grid;place-items:center;font-size:26px;background:var(--grass);box-shadow:inset -5px -5px 0 rgba(0,0,0,.25),inset 5px 5px 0 rgba(255,255,255,.25)}
+@keyframes pop{40%{transform:scale(1.06)}}
+.stats{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:center;margin-top:20px}
+.lvl{font-size:12px;color:var(--gold)}
+.rank{color:var(--mute);font-size:15px}
+.bar{grid-column:1/-1;height:22px;background:var(--bg);border:3px solid var(--line);position:relative;overflow:hidden}
+.fill{height:100%;width:0;background:repeating-linear-gradient(90deg,var(--gold) 0 14px,#d8a920 14px 16px);transition:width .8s cubic-bezier(.2,.9,.3,1.2)}
+.xpt{grid-column:1/-1;font-size:14px;color:var(--mute)}
+.subj{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.subj button{background:var(--bg2);color:var(--ink);border:3px solid var(--line);padding:32px 12px;font:800 22px Nunito,Arial,sans-serif;cursor:pointer;transition:transform .15s,background .15s}
+.subj button:hover:not(:disabled){transform:translateY(-4px) rotate(-1deg);background:var(--grass-d)}
+.subj button:disabled{opacity:.5;cursor:not-allowed}
+.subj b{display:block;font-size:68px;margin-bottom:12px;line-height:1.1}
+.hint{color:var(--mute);margin:0}
+.q{font-size:22px;margin:6px 0 16px;min-height:2.6em}
+.dots{display:flex;gap:6px;margin-bottom:14px}
+.dots i{flex:1;height:10px;background:var(--bg);border:2px solid var(--line);transition:background .3s}
+.dots i.ok{background:var(--grass)}.dots i.no{background:var(--red)}.dots i.now{border-color:var(--gold)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.opts button,.go{background:var(--grass);color:var(--btnink);border:0;border-bottom:5px solid var(--grass-d);padding:14px;font:800 19px Nunito,Arial,sans-serif;cursor:pointer;transition:transform .1s}
+.opts button:hover:not(:disabled){transform:translateY(-2px)}
+.opts button:active:not(:disabled),.go:active{transform:translateY(3px);border-bottom-width:2px}
+.opts button.right{background:var(--gold);animation:pop .4s}
+.opts button.wrong{background:var(--red);color:#fff;animation:shake .4s}
+.opts button:disabled{cursor:default}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.fb{min-height:1.6em;margin:14px 0 0;font-weight:800}
+.go{margin-top:12px}
+.res{text-align:center}.res .big{font-size:40px;animation:pop .6s}
+.fly{position:fixed;width:12px;height:12px;z-index:9;pointer-events:none;animation:fly 1.2s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--x),var(--y)) rotate(360deg);opacity:0}}
+.toast{position:fixed;left:50%;top:calc(20px + env(safe-area-inset-top,0px));transform:translate(-50%,-140%);background:var(--gold);color:var(--btnink);padding:14px 18px;font-size:12px;z-index:10;transition:transform .5s cubic-bezier(.2,1.4,.4,1);border-bottom:5px solid #b88d14;text-align:center;max-width:92vw}
+.toast.on{transform:translate(-50%,0)}
+button:focus-visible{outline:3px solid var(--dia);outline-offset:2px}
+.hide{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header>
-<h1>⛏ МОЙ РЕПЕТИТОР</h1>
-<div>Твоя территория знаний</div>
-</header>
+<div id="cubes" aria-hidden="true"></div>
+<div class="toast px" id="toast" role="status"></div>
 <main>
-<section class="panel">
-<h2>👤 Выбери ученика</h2>
-<button onclick="choose('Павел')" id="pavel">Павел</button>
-<button onclick="choose('Виталий')" id="vitaly">Виталий</button>
-<div id="profile" class="small">Выбери свой профиль</div>
-</section>
+<div class="top">
+<header class="hero">
+<span class="pick" aria-hidden="true">⛏️</span>
+<h1 class="px">Мой репетитор</h1>
+<p>Решай задания, копи опыт и прокачивай уровень</p>
+</header>
 
-<section class="panel">
-<h2>⭐ Мой игровой опыт</h2>
-<div id="xp">0 XP</div>
-<div class="bar"><div class="fill" id="progress"></div></div>
-<p id="level" class="small">Уровень 1 · Новичок</p>
-</section>
-
-<section class="panel">
-<h2>📚 Мир знаний</h2>
-<div class="subjects">
-<div class="subject" onclick="openSubject('Математика')"><span>🧮</span>Математика</div>
-<div class="subject" onclick="openSubject('Русский язык')"><span>📖</span>Русский язык</div>
-<div class="subject" onclick="openSubject('Английский язык')"><span>🔤</span>Английский</div>
-<div class="subject" onclick="openSubject('Окружающий мир')"><span>🌍</span>Окружающий мир</div>
-<div class="subject" onclick="openSubject('Литературное чтение')"><span>📚</span>Литературное чтение</div>
+<aside class="block side" aria-labelledby="h-who">
+<h2 class="px" id="h-who">Кто играет?</h2>
+<div class="who">
+<button type="button" data-n="Павел" aria-pressed="false"><span class="av">🧑‍🚀</span>Павел</button>
+<button type="button" data-n="Виталий" aria-pressed="false"><span class="av">🧙</span>Виталий</button>
 </div>
+<div class="stats">
+<div class="lvl px" id="lvl">Уровень 1</div><div class="rank" id="rank">Новичок</div>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<div class="xpt" id="xpt">Выбери ученика, чтобы начать</div>
+</div>
+</aside>
+</div>
+
+<section class="block" id="subjBlock" aria-labelledby="h-sub">
+<h2 class="px" id="h-sub">Мир знаний</h2>
+<div class="subj" id="subj"></div>
 </section>
 
-<section class="panel">
-<h2>🎒 Учебная зона</h2>
-<div id="lesson">Сначала выбери ученика, затем предмет.</div>
+<section class="block hide" id="quiz" aria-live="polite">
+<h2 class="px" id="qtitle"></h2>
+<div class="dots" id="dots"></div>
+<div id="qbody"></div>
 </section>
 </main>
 
 <script>
-let current='';
-let data=JSON.parse(localStorage.getItem('tutorData')||'{}');
+(function(){
+var LV=["Новичок","Дровосек","Шахтёр","Кузнец","Страж","Мастер"];
+var COL=["#6fb43f","#8a5a35","#8a8f94","#f3c53a","#4fd8e0","#e0503a"];
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=rnd(0,i),t=a[i];a[i]=a[j];a[j]=t}return a}
+function math(){
+ var t=rnd(0,3),a,b;
+ if(t==0){a=rnd(6,49);b=rnd(3,40);return[a+" + "+b+" = ?",a+b,[a+b+10,a+b-1,a+b+1,a+b-10]]}
+ if(t==1){a=rnd(30,99);b=rnd(5,29);return[a+" − "+b+" = ?",a-b,[a-b+10,a-b-1,a-b+1,a-b-10]]}
+ if(t==2){a=rnd(2,9);b=rnd(2,9);return[a+" × "+b+" = ?",a*b,[a*b+a,a*b-b,a*b+1,a*b-1]]}
+ b=rnd(2,9);a=b*rnd(2,9);return[a+" ÷ "+b+" = ?",a/b,[a/b+1,a/b-1,a/b+b,a/b+2]]}
+var POOL={
+ru:[["Какая буква пропущена: м_локо?","о",["а","е","и"]],["Сколько слогов в слове «машина»?","3",["2","4","1"]],["Какое слово — имя существительное?","книга",["быстро","красный","читать"]],["Выбери проверочное слово к «сл_д»","следы",["идти","слон","сладкий"]],["Как пишется правильно?","жизнь",["жызнь","жизнъ","жизнь."]],["Что ставят в конце вопроса?","?",[".","!",","]],["Сколько гласных в слове «окно»?","2",["1","3","4"]]],
+en:[["Cat по-русски — это…","кошка",["собака","дом","мяч"]],["Как будет «красный»?","red",["blue","green","black"]],["Выбери: I ___ a boy.","am",["is","are","be"]],["Как будет «три»?","three",["tree","two","free"]],["Что значит apple?","яблоко",["груша","арбуз","сок"]],["Как будет «книга»?","book",["look","cook","box"]],["Как будет «здравствуй»?","hello",["bye","thanks","sorry"]]],
+wo:[["Какое время года после зимы?","весна",["лето","осень","зима"]],["Какая планета — наш дом?","Земля",["Марс","Венера","Юпитер"]],["Кто из них — насекомое?","пчела",["лиса","окунь","воробей"]],["Что нужно растению для роста?","свет и вода",["только песок","только лёд","шоколад"]],["Сколько дней в неделе?","7",["5","6","10"]],["Что из этого — природа?","река",["стол","телефон","машина"]],["Где живёт белый медведь?","Арктика",["пустыня","джунгли","саванна"]]],
+lit:[["Кто написал «Сказку о рыбаке и рыбке»?","А. С. Пушкин",["Л. Н. Толстой","К. Чуковский","А. Барто"]],["Кто главный герой сказки «Колобок»?","Колобок",["Репка","Курочка Ряба","Теремок"]],["Сколько поросят в сказке про волка?","3",["2","5","7"]],["Кто написал «Муху-цокотуху»?","К. Чуковский",["С. Маршак","И. Крылов","Н. Носов"]],["Что значит слово «басня»?","короткий рассказ с моралью",["длинный роман","загадка","считалка"]],["Кто жил в «Простоквашино»?","Дядя Фёдор, Шарик, Матроскин",["Чебурашка и Гена","Винни-Пух и Пятачок","Карлсон"]],["Из чего была сделана Золотая рыбка?","Она была живая, из моря",["из золота","из дерева","из стекла"]]]};
+var SUBJECTS=[["Математика","🧮",null],["Русский язык","📖","ru"],["Английский","🔤","en"],["Окружающий мир","🌍","wo"],["Литературное чтение","📚","lit"]];
+var cur="",data={};
+try{data=JSON.parse(localStorage.getItem("tutorData")||"{}")}catch(e){data={}}
+function save(){try{localStorage.setItem("tutorData",JSON.stringify(data))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
 
-function save(){
- localStorage.setItem('tutorData',JSON.stringify(data));
-}
-function choose(name){
- current=name;
- if(!data[name]) data[name]={xp:0};
- document.getElementById('pavel').classList.toggle('active',name==='Павел');
- document.getElementById('vitaly').classList.toggle('active',name==='Виталий');
- document.getElementById('profile').textContent='Профиль ученика: '+name;
- update();
- document.getElementById('lesson').textContent='Отлично! '+name+', выбери предмет для занятия.';
+// background cubes
+(function(){var c=$("cubes"),h="";for(var i=0;i<14;i++){var s=rnd(18,46);h+='<i style="left:'+rnd(0,96)+'%;--s:'+s+'px;--c:'+COL[rnd(0,5)]+';--d:'+rnd(16,32)+'s;--w:-'+rnd(0,30)+'s"></i>'}c.innerHTML=h})();
+
+// subjects
+var sb=$("subj");
+SUBJECTS.forEach(function(s,i){var b=document.createElement("button");b.type="button";b.innerHTML="<b>"+s[1]+"</b>"+s[0];b.dataset.i=i;b.disabled=true;sb.appendChild(b)});
+sb.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&!b.disabled)startQuiz(+b.dataset.i)});
+
+// profile
+document.querySelector(".who").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;choose(b.dataset.n)});
+function choose(n){
+ cur=n;if(!data[n])data[n]={xp:0};
+ document.querySelectorAll(".who button").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.n===n)});
+ sb.querySelectorAll("button").forEach(function(b){b.disabled=false});
+ $("quiz").classList.add("hide");update(false);
 }
 function update(){
- if(!current)return;
- let xp=data[current].xp;
- document.getElementById('xp').textContent=xp+' XP';
- document.getElementById('progress').style.width=(xp%100)+'%';
- document.getElementById('level').textContent='Уровень '+(Math.floor(xp/100)+1);
+ if(!cur)return;var xp=data[cur].xp,l=Math.floor(xp/100);
+ $("lvl").textContent="Уровень "+(l+1);$("rank").textContent=LV[Math.min(l,LV.length-1)];
+ $("fill").style.width=(xp%100)+"%";$("xpt").textContent=cur+": "+xp+" XP, до следующего уровня "+(100-xp%100);
 }
-function openSubject(subject){
- if(!current){
-  alert('Сначала выбери ученика!');
-  return;
- }
- document.getElementById('lesson').innerHTML=
- '<h3>📘 '+subject+'</h3><p>Здесь будет занятие для ученика '+current+'.</p><p class="small">Система будет учитывать его собственные знания и успехи.</p><button onclick="earn()">Получить тестовые 10 XP</button>';
+function toast(t){var e=$("toast");e.textContent=t;e.classList.add("on");setTimeout(function(){e.classList.remove("on")},2600)}
+function burst(n,el){
+ var r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+ for(var i=0;i<n;i++){var d=document.createElement("i");d.className="fly";d.style.left=x+"px";d.style.top=y+"px";d.style.background=COL[rnd(0,5)];d.style.setProperty("--x",rnd(-160,160)+"px");d.style.setProperty("--y",rnd(-200,120)+"px");document.body.appendChild(d);setTimeout(function(n){n.remove()},1300,d)}
 }
-function earn(){
- data[current].xp+=10;
- save();
- update();
- alert('Ты получил 10 XP!');
+function addXp(n,el){
+ var before=Math.floor(data[cur].xp/100);data[cur].xp+=n;save();update();
+ var after=Math.floor(data[cur].xp/100);
+ if(after>before){toast("Новый уровень! "+LV[Math.min(after,LV.length-1)]);burst(40,$("fill"))}
 }
+
+// quiz
+var Q,qi,score,locked;
+function startQuiz(i){
+ var s=SUBJECTS[i];
+ Q=[];
+ if(s[2]){Q=shuf(POOL[s[2]]).slice(0,5)}else{for(var k=0;k<5;k++)Q.push(math())}
+ qi=0;score=0;
+ $("quiz").classList.remove("hide");$("qtitle").textContent=s[1]+" "+s[0];
+ var d="";for(k=0;k<Q.length;k++)d+="<i></i>";$("dots").innerHTML=d;
+ $("quiz").scrollIntoView({behavior:"smooth",block:"start"});
+ show();
+}
+function show(){
+ var q=Q[qi],dots=$("dots").children;
+ for(var k=0;k<dots.length;k++)dots[k].classList.toggle("now",k===qi);
+ var opts=shuf([String(q[1])].concat(q[2].map(String)).filter(function(v,i,a){return a.indexOf(v)===i}).slice(0,4));
+ if(opts.indexOf(String(q[1]))<0)opts[0]=String(q[1]);
+ var b=$("qbody");b.innerHTML="";
+ var h=document.createElement("p");h.className="q";h.textContent=q[0];b.appendChild(h);
+ var g=document.createElement("div");g.className="opts";
+ opts.forEach(function(o){var x=document.createElement("button");x.type="button";x.textContent=o;x.onclick=function(){answer(x,o===String(q[1]),g)};g.appendChild(x)});
+ b.appendChild(g);var f=document.createElement("p");f.className="fb";f.id="fb";b.appendChild(f);locked=false;
+}
+function answer(btn,ok,g){
+ if(locked)return;locked=true;
+ var q=Q[qi],dots=$("dots").children;
+ g.querySelectorAll("button").forEach(function(x){x.disabled=true;if(x.textContent===String(q[1]))x.classList.add("right")});
+ if(ok){score++;dots[qi].classList.add("ok");$("fb").textContent="Верно! +10 XP";burst(14,btn);addXp(10,btn)}
+ else{btn.classList.add("wrong");dots[qi].classList.add("no");$("fb").textContent="Почти! Правильный ответ: "+q[1]}
+ var n=document.createElement("button");n.type="button";n.className="go";n.textContent=qi<Q.length-1?"Дальше":"Узнать результат";
+ n.onclick=function(){qi++;qi<Q.length?show():finish()};$("qbody").appendChild(n);n.focus();
+}
+function finish(){
+ var bonus=score===Q.length;if(bonus)addXp(20,$("qbody"));
+ var b=$("qbody");b.className="res";
+ b.innerHTML='<div class="big">'+(bonus?"🏆":score>2?"⭐":"💪")+'</div><p class="q">'+cur+", ты ответил верно на "+score+" из "+Q.length+(bonus?". Бонус +20 XP!":".")+'</p>';
+ var again=document.createElement("button");again.type="button";again.className="go";again.textContent="Выбрать другой предмет";
+ again.onclick=function(){b.className="";$("quiz").classList.add("hide");$("subjBlock").scrollIntoView({behavior:"smooth"})};
+ b.appendChild(again);if(bonus)burst(40,b);
+}
+})();
 </script>
 </body>
 </html>
